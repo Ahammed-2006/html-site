@@ -1,31 +1,158 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>My First Website</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>My Static Site</title>
+  <meta name="description" content="A simple static site template for AWS S3 + Jenkins CI/CD" />
+
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 2rem;
-      background-color: #f4f4f4;
+    /* Simple, self-contained CSS */
+    :root{
+      --bg:#0f1724; --card:#0b1220; --accent:#06b6d4; --muted:#94a3b8;
+      --radius:12px; --gap:18px; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
     }
-    h1 {
-      color: #333;
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; background:linear-gradient(180deg,#071028 0%, #071021 100%); color:#e6eef6;
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+      line-height:1.45; padding:28px;
     }
-    a {
-      color: blue;
-      text-decoration: none;
+    .container{max-width:980px;margin:0 auto;}
+    header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:28px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{
+      width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#7c3aed);
+      display:flex;align-items:center;justify-content:center;font-weight:700;color:#022;box-shadow:0 6px 18px rgba(6,182,212,.12)
     }
+    nav a{color:var(--muted);text-decoration:none;margin-left:16px;font-weight:600;font-size:0.95rem}
+    nav a:hover{color:var(--accent)}
+    .hero{
+      display:grid;grid-template-columns:1fr;gap:20px;
+      align-items:center;padding:28px;border-radius:var(--radius);background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.01));
+      box-shadow:0 6px 20px rgba(2,6,23,.6);
+    }
+
+    h1{font-size:clamp(1.6rem,3.4vw,2.2rem);margin:0 0 8px}
+    p.lead{color:var(--muted);margin:0 0 18px}
+
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:18px;}
+    .card{background:var(--card);padding:16px;border-radius:10px;border:1px solid rgba(255,255,255,.02)}
+    .btn{display:inline-block;padding:10px 14px;border-radius:8px;background:linear-gradient(90deg,var(--accent),#7c3aed);color:#012; font-weight:700;text-decoration:none}
+    footer{margin-top:28px;color:var(--muted);font-size:0.9rem;text-align:center}
+
+    /* small utilities */
+    .muted{color:var(--muted);font-size:0.95rem}
+    @media(min-width:880px){
+      .hero{grid-template-columns:1fr 350px}
+    }
+    pre{background:#071328;padding:12px;border-radius:8px;overflow:auto;color:#bfefff;font-size:.9rem}
   </style>
 </head>
 <body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo">M</div>
+        <div>
+          <div style="font-weight:700">My Static Site</div>
+          <div class="muted" style="font-size:.85rem">Hosted on AWS S3 + Deployed via Jenkins</div>
+        </div>
+      </div>
 
-  <h1>Welcome to My Website</h1>
-  <p>This is a hello HTML page. You can customize it as you like.</p>
+      <nav>
+        <a href="#home">Home</a>
+        <a href="#features">Features</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
 
-  <a href="https://example.com" target="_blank">Visit Example.com</a>
+    <main>
+      <section class="hero" id="home">
+        <div>
+          <h1>Simple, fast, and CI/CD-ready static site</h1>
+          <p class="lead">Push to Git → Jenkins builds → Files sync to S3. Lightweight template ready to customize — HTML, CSS, and client-side JS only.</p>
 
+          <div style="display:flex;gap:10px;align-items:center">
+            <a class="btn" href="#features">Get Started</a>
+            <a class="muted" href="https://aws.amazon.com/s3/" target="_blank" rel="noopener">Learn about S3</a>
+          </div>
+
+          <div class="grid" style="margin-top:18px">
+            <div class="card">
+              <strong>Fast</strong>
+              <div class="muted" style="margin-top:6px">Static files served directly from S3 or CloudFront.</div>
+            </div>
+            <div class="card">
+              <strong>Automated</strong>
+              <div class="muted" style="margin-top:6px">Jenkins pipeline syncs changes on push.</div>
+            </div>
+            <div class="card">
+              <strong>Cheap</strong>
+              <div class="muted" style="margin-top:6px">Very low hosting cost for static content.</div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="card" aria-hidden="true">
+          <strong>Deploy command</strong>
+          <pre>aws s3 sync . s3://your-s3-bucket-name --delete --region ap-south-1</pre>
+          <div class="muted" style="margin-top:10px">Put this command in your Jenkins <code>sh</code> step after cloning repo.</div>
+        </aside>
+      </section>
+
+      <section id="features" style="margin-top:20px">
+        <h2 style="margin-bottom:8px">Features</h2>
+        <div class="grid">
+          <div class="card">
+            <strong>Responsive layout</strong>
+            <div class="muted" style="margin-top:6px">Works on phones and desktops.</div>
+          </div>
+          <div class="card">
+            <strong>Single-file CSS</strong>
+            <div class="muted" style="margin-top:6px">No build step required — drop and go.</div>
+          </div>
+          <div class="card">
+            <strong>Easy to customize</strong>
+            <div class="muted" style="margin-top:6px">Replace text, add pages, or add a small JS file for interactivity.</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="about" style="margin-top:20px">
+        <h2 style="margin-bottom:8px">About</h2>
+        <div class="card">
+          <p class="muted">This template is intentionally simple so it can be deployed directly to S3 without Node, bundlers, or server-side code. Perfect for portfolios, docs, landing pages, and demos.</p>
+        </div>
+      </section>
+
+      <section id="contact" style="margin-top:20px">
+        <h2 style="margin-bottom:8px">Contact</h2>
+        <div class="card">
+          <form onsubmit="alert('Form demo — replace with actual service'); return false">
+            <label class="muted">Name</label><br>
+            <input required style="width:100%;padding:10px;margin-top:8px;border-radius:8px;border:1px solid rgba(255,255,255,.04);background:transparent;color:inherit"><br><br>
+
+            <label class="muted">Message</label><br>
+            <textarea required style="width:100%;padding:10px;margin-top:8px;border-radius:8px;border:1px solid rgba(255,255,255,.04);background:transparent;color:inherit" rows="4"></textarea><br><br>
+
+            <button class="btn" type="submit">Send</button>
+          </form>
+        </div>
+      </section>
+
+    </main>
+
+    <footer>
+      © <span id="year"></span> My Static Site — Deployed with Jenkins → S3
+    </footer>
+  </div>
+
+  <script>
+    // small script just to set year
+    document.getElementById('year').innerText = new Date().getFullYear();
+  </script>
 </body>
 </html>
-
